@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Rolodex</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+      background: #fafafa;
+      color: #1a1a1a;
+      line-height: 1.5;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 600;
+      color: #1a1a1a;
+      letter-spacing: -0.02em;
+    }
+
+    .stats {
+      font-size: 15px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #374151;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    button:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    button.primary {
+      background: #f97316;
+      color: white;
+      border-color: #f97316;
+      box-shadow: 0 1px 2px rgba(249, 115, 22, 0.2);
+    }
+
+    button.primary:hover {
+      background: #ea580c;
+      border-color: #ea580c;
+      box-shadow: 0 2px 4px rgba(249, 115, 22, 0.3);
+    }
+
+    .note-item {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .note-item:hover {
+      border-color: #d1d5db;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .note-text {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: #1f2937;
+    }
+
+    .note-meta {
+      font-size: 13px;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .note-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .note-actions button {
+      padding: 6px 12px;
+      font-size: 12px;
+      border: none;
+      background: transparent;
+      color: #6b7280;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    .note-actions button:hover {
+      color: #374151;
+      background: #f3f4f6;
+    }
+
+    .note-actions .delete:hover {
+      color: #dc2626;
+      background: #fef2f2;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: #6b7280;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 12px 0;
+      font-weight: 600;
+      font-size: 20px;
+      color: #374151;
+    }
+
+    .empty-state p {
+      margin: 0;
+      font-size: 15px;
+      color: #9ca3af;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 24px;
+      background: #ffffff;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: #f97316;
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+    }
+
+    .settings-panel {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .settings-panel.visible {
+      display: block;
+    }
+
+    .settings-panel h3 {
+      margin: 0 0 20px 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+    .setting-label {
+      font-weight: 600;
+      color: #374151;
+      font-size: 16px;
+    }
+
+    .setting-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .switch {
+      position: relative;
+      width: 48px;
+      height: 28px;
+      background: #d1d5db;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .switch.active {
+      background: #f97316;
+    }
+
+    .switch-handle {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .switch.active .switch-handle {
+      transform: translateX(20px);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Rolodex</h1>
+    <div class="stats">
+      <span id="noteCount">0 notes</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="primary" onclick="showQuickNote()">Quick Note (Ctrl+Space)</button>
+    <button onclick="toggleSettings()">Settings</button>
+    <button onclick="clearSearch()">Clear Search</button>
+  </div>
+
+  <div id="settingsPanel" class="settings-panel">
+    <h3>Settings</h3>
+    <div class="setting-item">
+      <div>
+        <div class="setting-label">Return Key Behavior</div>
+        <div class="setting-description">When enabled, pressing Return will save and open the app. When disabled, Return only saves the note.</div>
+      </div>
+      <div class="switch" id="followNoteSwitch" onclick="toggleFollowNote()">
+        <div class="switch-handle"></div>
+      </div>
+    </div>
+  </div>
+
+  <input type="text" class="search-box" id="searchBox" placeholder="Search notes...">
+
+  <div id="notesContainer">
+    <div class="empty-state">
+      <h3>No notes yet</h3>
+      <p>Press Ctrl+Space to create your first note</p>
+    </div>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    let allNotes = [];
+    let filteredNotes = [];
+    let settingsVisible = false;
+
+    async function loadNotes() {
+      allNotes = await ipcRenderer.invoke('get-notes');
+      filteredNotes = [...allNotes];
+      renderNotes();
+      updateStats();
+    }
+
+    async function loadConfig() {
+      const config = await ipcRenderer.invoke('get-config');
+      const followSwitch = document.getElementById('followNoteSwitch');
+      if (config.followNoteToApp) {
+        followSwitch.classList.add('active');
+      } else {
+        followSwitch.classList.remove('active');
+      }
+    }
+
+    function renderNotes() {
+      const container = document.getElementById('notesContainer');
+
+      if (filteredNotes.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>${allNotes.length === 0 ? 'No notes yet' : 'No matching notes'}</h3>
+            <p>${allNotes.length === 0 ? 'Press Ctrl+Space to create your first note' : 'Try a different search term'}</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredNotes.map(note => `
+        <div class="note-item">
+          <div class="note-text">${escapeHtml(note.text)}</div>
+          <div class="note-meta">
+            <span>${formatDate(note.createdAt)}</span>
+            <div class="note-actions">
+              <button onclick="copyNote('${note.id}')">Copy</button>
+              <button class="delete" onclick="deleteNote('${note.id}')">Delete</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateStats() {
+      const count = allNotes.length;
+      document.getElementById('noteCount').textContent = `${count} note${count !== 1 ? 's' : ''}`;
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffMs = now - date;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMs / 3600000);
+      const diffDays = Math.floor(diffMs / 86400000);
+
+      if (diffMins < 1) return 'Just now';
+      if (diffMins < 60) return `${diffMins}m ago`;
+      if (diffHours < 24) return `${diffHours}h ago`;
+      if (diffDays < 7) return `${diffDays}d ago`;
+
+      return date.toLocaleDateString();
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    async function deleteNote(noteId) {
+      if (confirm('Delete this note?')) {
+        allNotes = await ipcRenderer.invoke('delete-note', parseInt(noteId));
+        applySearch();
+        updateStats();
+      }
+    }
+
+    function copyNote(noteId) {
+      const note = allNotes.find(n => n.id === parseInt(noteId));
+      if (note) {
+        navigator.clipboard.writeText(note.text);
+      }
+    }
+
+    function showQuickNote() {
+      // This will trigger the same behavior as Ctrl+Space
+      ipcRenderer.send('show-quick-note');
+    }
+
+    function toggleSettings() {
+      settingsVisible = !settingsVisible;
+      const panel = document.getElementById('settingsPanel');
+      panel.classList.toggle('visible', settingsVisible);
+    }
+
+    async function toggleFollowNote() {
+      const followSwitch = document.getElementById('followNoteSwitch');
+      const isActive = followSwitch.classList.contains('active');
+
+      followSwitch.classList.toggle('active', !isActive);
+
+      await ipcRenderer.invoke('set-config', {
+        followNoteToApp: !isActive
+      });
+    }
+
+    function applySearch() {
+      const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+      if (!searchTerm) {
+        filteredNotes = [...allNotes];
+      } else {
+        filteredNotes = allNotes.filter(note =>
+          note.text.toLowerCase().includes(searchTerm)
+        );
+      }
+      renderNotes();
+    }
+
+    function clearSearch() {
+      document.getElementById('searchBox').value = '';
+      applySearch();
+    }
+
+    // Event listeners
+    document.getElementById('searchBox').addEventListener('input', applySearch);
+
+    // IPC listeners
+    ipcRenderer.on('refresh-notes', loadNotes);
+
+    // Initial load
+    loadNotes();
+    loadConfig();
+  </script>
+</body>
+</html>
