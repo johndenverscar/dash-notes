@@ -288,6 +288,55 @@
     .switch.active .switch-handle {
       transform: translateX(20px);
     }
+
+    .note-edit {
+      margin-bottom: 12px;
+    }
+
+    .note-edit-textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 12px;
+      border: 1px solid var(--border-secondary);
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      line-height: 1.6;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      resize: vertical;
+      transition: all 0.15s ease;
+      box-sizing: border-box;
+    }
+
+    .note-edit-textarea:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--overlay);
+    }
+
+    .edit-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .edit-actions button {
+      padding: 6px 12px;
+      font-size: 12px;
+      border: 1px solid var(--border-secondary);
+      border-radius: 6px;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    .edit-actions button:hover {
+      background: var(--bg-primary);
+      border-color: var(--text-tertiary);
+    }
   </style>
 </head>
 <body>
@@ -385,11 +434,19 @@
       }
 
       container.innerHTML = filteredNotes.map(note => `
-        <div class="note-item">
-          <div class="note-text">${escapeHtml(note.text)}</div>
+        <div class="note-item" id="note-${note.id}">
+          <div class="note-text" id="text-${note.id}">${escapeHtml(note.text)}</div>
+          <div class="note-edit" id="edit-${note.id}" style="display: none;">
+            <textarea class="note-edit-textarea" id="textarea-${note.id}" oninput="autoResize(this)" onkeydown="handleEditKeydown(event, '${note.id}')">${escapeHtml(note.text)}</textarea>
+            <div class="edit-actions">
+              <button onclick="saveEdit('${note.id}')">Save (Ctrl+Enter)</button>
+              <button onclick="cancelEdit('${note.id}')">Cancel (Esc)</button>
+            </div>
+          </div>
           <div class="note-meta">
             <span>${formatDate(note.createdAt)}</span>
             <div class="note-actions">
+              <button onclick="editNote('${note.id}')">Edit</button>
               <button onclick="copyNote('${note.id}')">Copy</button>
               <button class="delete" onclick="deleteNote('${note.id}')">Delete</button>
             </div>
@@ -495,6 +552,70 @@
     function clearSearch() {
       document.getElementById('searchBox').value = '';
       applySearch();
+    }
+
+    function editNote(noteId) {
+      const textDiv = document.getElementById(`text-${noteId}`);
+      const editDiv = document.getElementById(`edit-${noteId}`);
+      const textarea = document.getElementById(`textarea-${noteId}`);
+
+      textDiv.style.display = 'none';
+      editDiv.style.display = 'block';
+
+      // Auto-resize textarea and focus
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+      textarea.focus();
+      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+    }
+
+    function cancelEdit(noteId) {
+      const textDiv = document.getElementById(`text-${noteId}`);
+      const editDiv = document.getElementById(`edit-${noteId}`);
+      const textarea = document.getElementById(`textarea-${noteId}`);
+
+      // Reset textarea to original value
+      const note = allNotes.find(n => n.id === parseInt(noteId));
+      if (note) {
+        textarea.value = note.text;
+      }
+
+      editDiv.style.display = 'none';
+      textDiv.style.display = 'block';
+    }
+
+    async function saveEdit(noteId) {
+      const textarea = document.getElementById(`textarea-${noteId}`);
+      const newText = textarea.value.trim();
+
+      if (!newText) {
+        alert('Note cannot be empty');
+        return;
+      }
+
+      try {
+        await ipcRenderer.invoke('update-note', parseInt(noteId), newText);
+        allNotes = await ipcRenderer.invoke('get-notes');
+        applySearch();
+        updateStats();
+      } catch (error) {
+        alert('Failed to save note: ' + error.message);
+      }
+    }
+
+    function autoResize(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+    }
+
+    function handleEditKeydown(event, noteId) {
+      if (event.key === 'Enter' && event.ctrlKey) {
+        event.preventDefault();
+        saveEdit(noteId);
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        cancelEdit(noteId);
+      }
     }
 
     // Event listeners

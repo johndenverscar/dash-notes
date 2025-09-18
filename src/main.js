@@ -166,6 +166,28 @@ ipcMain.handle('delete-note', async (event, noteId) => {
   return filteredNotes;
 });
 
+ipcMain.handle('update-note', async (event, noteId, newText) => {
+  const notes = store.get('notes', []);
+  const noteIndex = notes.findIndex(note => note.id === noteId);
+
+  if (noteIndex === -1) {
+    throw new Error('Note not found');
+  }
+
+  // Update the note text and modified timestamp
+  notes[noteIndex].text = newText;
+  notes[noteIndex].modifiedAt = new Date().toISOString();
+
+  store.set('notes', notes);
+
+  // Refresh main window if it exists and is visible
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send('refresh-notes');
+  }
+
+  return notes[noteIndex];
+});
+
 ipcMain.handle('get-config', async () => {
   return {
     followNoteToApp: store.get('followNoteToApp', false),
