@@ -46,8 +46,8 @@ function createMainWindow() {
 
 function createInputWindow() {
   inputWindow = new BrowserWindow({
-    width: 400,
-    height: 100,
+    width: 600,
+    height: 120,
     frame: false,
     alwaysOnTop: true,
     resizable: false,
@@ -84,8 +84,8 @@ function showInputWindow() {
   const { width, height } = display.workAreaSize;
 
   inputWindow.setPosition(
-    Math.round((width - 400) / 2),
-    Math.round((height - 100) / 2)
+    Math.round((width - 600) / 2),
+    Math.round((height - 120) / 2)
   );
 
   inputWindow.show();

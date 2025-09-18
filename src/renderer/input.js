@@ -9,10 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     noteInput.focus();
   });
 
-  // Clear input when window hides
-  ipcRenderer.on('clear-input', () => {
-    noteInput.value = '';
-  });
 
   // Handle theme changes
   ipcRenderer.on('set-theme', (event, theme) => {
@@ -62,9 +58,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Auto-resize textarea
-  noteInput.addEventListener('input', () => {
+  // Set initial height and auto-resize textarea
+  const setTextareaHeight = () => {
     noteInput.style.height = 'auto';
-    noteInput.style.height = Math.min(noteInput.scrollHeight, 200) + 'px';
+    const newHeight = Math.max(noteInput.scrollHeight, 24); // Minimum height
+    noteInput.style.height = Math.min(newHeight, 200) + 'px';
+  };
+
+  // Set initial height
+  setTextareaHeight();
+
+  // Auto-resize on input
+  noteInput.addEventListener('input', setTextareaHeight);
+
+  // Reset height when clearing
+  ipcRenderer.on('clear-input', () => {
+    noteInput.value = '';
+    setTextareaHeight();
   });
 });
