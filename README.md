@@ -32,37 +32,76 @@ npm install
 
 ## Development
 
+The app uses Vite for fast development with hot module replacement:
+
 ```bash
 npm run dev
 ```
 
+This will:
+- Start the Vite development server on `http://localhost:3000`
+- Launch Electron with hot reload capabilities
+- Automatically reload when you make changes to CSS or JavaScript files
+
 ## Building
 
 ### Development Build
+Build the project for testing (creates optimized bundles):
 ```bash
 npm run build
 ```
 
-### Production Release
+### Creating Distribution Packages
+
+For local testing/packaging:
 ```bash
-npm run build:mac
+npm run electron:pack
 ```
 
-This creates:
-- `dist/Dash Notes-0.1.0.dmg` - Installer for distribution
-- `dist/Dash Notes-0.1.0-mac.zip` - Portable app bundle
+For production release (creates DMG and ZIP files):
+```bash
+npm run electron:dist
+```
+
+This creates files in the `dist/` folder:
+- `Dash Notes-0.1.0.dmg` - Installer for distribution
+- `Dash Notes-0.1.0-mac.zip` - Portable app bundle
 
 ## Creating a Release
 
 1. **Update version** in `package.json`
-2. **Build the app**:
+2. **Build the production app**:
    ```bash
-   npm run build:mac
+   npm run electron:dist
    ```
 3. **Find build artifacts** in the `dist/` folder:
    - DMG file for easy installation
    - ZIP file for portable use
-4. **Distribute** the DMG file to users
+4. **Test the DMG** by installing and running it
+5. **Distribute** the DMG file to users
+
+## Project Structure
+
+The project uses a modern Vite-based architecture:
+
+```
+src/
+├── main/           # Main Electron process
+│   └── index.js    # App initialization, window management, IPC
+└── renderer/       # Renderer processes (UI)
+    ├── main.html   # Main app window
+    ├── main.js     # Main window logic
+    ├── input.html  # Quick note input window
+    ├── input.js    # Input window logic
+    └── styles.css  # Tailwind CSS styles
+```
+
+## Build System
+
+- **Vite**: Modern build tool with fast hot reload
+- **Tailwind CSS**: Utility-first CSS framework
+- **Electron Builder**: Creates platform-specific installers
+- **PostCSS**: CSS processing with Tailwind and Autoprefixer
 
 ## Usage
 
@@ -80,6 +119,8 @@ In the main app, go to Settings to configure:
 ## Architecture
 
 Built with Electron for cross-platform compatibility with native Mac features:
-- Global shortcuts via Electron's `globalShortcut` API
-- Persistent storage via `electron-store`
-- Native system tray integration
+- **Global shortcuts** via Electron's `globalShortcut` API
+- **Persistent storage** via `electron-store`
+- **Native system tray integration** with menu bar icon
+- **Modern development stack** with Vite, Tailwind CSS, and hot reload
+- **Optimized builds** with tree shaking and minification
