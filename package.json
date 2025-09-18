@@ -7,7 +7,9 @@
     "start": "electron .",
     "dev": "electron . --dev",
     "build": "electron-builder",
-    "pack": "electron-builder --dir"
+    "build:mac": "electron-builder --mac",
+    "pack": "electron-builder --dir",
+    "release": "electron-builder --mac --publish=never"
   },
   "keywords": ["note-taking", "productivity", "electron"],
   "author": "",
@@ -25,8 +27,44 @@
     "directories": {
       "output": "dist"
     },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
     "mac": {
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "dmg": {
+      "title": "Rolodex",
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "your-username",
+      "repo": "rolodex"
     }
   }
 }

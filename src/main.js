@@ -26,6 +26,16 @@ function createMainWindow() {
   });
 
   mainWindow.loadFile('src/main.html');
+
+  // Handle window closed - hide instead of destroy for dock icon functionality
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+
+  // Handle window being brought to front
+  mainWindow.on('show', () => {
+    mainWindow.focus();
+  });
 }
 
 function createInputWindow() {
@@ -195,6 +205,11 @@ ipcMain.on('set-theme', (event, theme) => {
 });
 
 app.whenReady().then(() => {
+  // Ensure dock icon is always visible on macOS
+  if (process.platform === 'darwin') {
+    app.dock.show();
+  }
+
   createMainWindow();
   createInputWindow();
   createTray();
@@ -218,7 +233,22 @@ app.on('will-quit', () => {
 });
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
+  // On macOS, show main window when dock icon is clicked
+  if (!mainWindow || mainWindow.isDestroyed()) {
     createMainWindow();
+  }
+  mainWindow.show();
+  mainWindow.focus();
+});
+
+// Handle app being brought to foreground (Alt+Tab) - but not when input window is active
+app.on('browser-window-focus', (event, window) => {
+  // Only show main window if:
+  // 1. It's the main window being focused
+  // 2. The input window is not currently shown
+  if (window === mainWindow && mainWindow && !mainWindow.isDestroyed() &&
+      (!inputWindow || inputWindow.isDestroyed() || !inputWindow.isVisible())) {
+    mainWindow.show();
+    mainWindow.focus();
   }
 });
