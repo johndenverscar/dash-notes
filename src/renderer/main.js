@@ -104,11 +104,65 @@ async function deleteNote(noteId) {
   }
 }
 
-function copyNote(noteId) {
+async function copyNote(noteId) {
   const note = allNotes.find(n => n.id === parseInt(noteId));
-  if (note) {
-    navigator.clipboard.writeText(note.text);
+  if (!note) {
+    showCopyFeedback(`copy-btn-${noteId}`, 'Note not found', 'error');
+    return;
   }
+
+  try {
+    await navigator.clipboard.writeText(note.text);
+    showCopyFeedback(`copy-btn-${noteId}`, 'Copied!', 'success');
+  } catch (error) {
+    console.error('Failed to copy note:', error);
+    // Fallback for older browsers or permission issues
+    try {
+      fallbackCopy(note.text);
+      showCopyFeedback(`copy-btn-${noteId}`, 'Copied!', 'success');
+    } catch (fallbackError) {
+      showCopyFeedback(`copy-btn-${noteId}`, 'Copy failed', 'error');
+    }
+  }
+}
+
+function fallbackCopy(text) {
+  // Create a temporary textarea element
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  if (!document.execCommand('copy')) {
+    throw new Error('Fallback copy failed');
+  }
+
+  document.body.removeChild(textarea);
+}
+
+function showCopyFeedback(buttonId, message, type) {
+  const button = document.querySelector(`[onclick*="${buttonId.replace('copy-btn-', '')}"][onclick*="copyNote"]`);
+  if (!button) return;
+
+  const originalText = button.textContent;
+  const originalClasses = button.className;
+
+  // Update button appearance based on type
+  if (type === 'success') {
+    button.textContent = message;
+    button.className = originalClasses + ' !text-green-600 dark:!text-green-400';
+  } else {
+    button.textContent = message;
+    button.className = originalClasses + ' !text-red-600 dark:!text-red-400';
+  }
+
+  // Reset after delay
+  setTimeout(() => {
+    button.textContent = originalText;
+    button.className = originalClasses;
+  }, 2000);
 }
 
 function showQuickNote() {

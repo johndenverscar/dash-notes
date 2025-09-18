@@ -283,7 +283,7 @@ app.on('browser-window-focus', (event, window) => {
   // 1. It's the main window being focused
   // 2. The input window is not currently shown
   if (window === mainWindow && mainWindow && !mainWindow.isDestroyed() &&
-      (!inputWindow || inputWindow.isDestroyed() || !inputWindow.isVisible())) {
+    (!inputWindow || inputWindow.isDestroyed() || !inputWindow.isVisible())) {
     mainWindow.show();
     mainWindow.focus();
   }
