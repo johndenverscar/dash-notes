@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Quick Note</title>
+  <style>
+    /* Custom backdrop filter styles */
+    body {
+      backdrop-filter: blur(40px) saturate(1.8);
+    }
+  </style>
+</head>
+<body class="m-0 p-3 font-system bg-white/95 dark:bg-bg-primary-dark/95 rounded-2xl border border-black/8 dark:border-border-primary-dark/80 shadow-xl transition-all duration-300">
+  <textarea id="noteInput" class="w-full p-4 border-0 outline-none text-base bg-transparent rounded-lg text-text-primary-light dark:text-text-primary-dark resize-none font-system leading-relaxed transition-colors duration-300 placeholder:text-text-tertiary-light dark:placeholder:text-text-tertiary-dark" placeholder="Type your note..." rows="2"></textarea>
+  <div class="mt-2 text-xs text-text-secondary-light/80 dark:text-text-secondary-dark/80 text-center font-medium transition-colors duration-300">Return to save • Cmd+Return to save and open app • Esc to cancel</div>
+
+  <script type="module" src="./input.js"></script>
+</body>
+</html>

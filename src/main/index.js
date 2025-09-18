@@ -25,7 +25,11 @@ function createMainWindow() {
     title: 'Dash Notes'
   });
 
-  mainWindow.loadFile('src/main.html');
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.loadURL('http://localhost:3000/main.html');
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../dist-renderer/main.html'));
+  }
 
   // Handle window closed - hide instead of destroy for dock icon functionality
   mainWindow.on('closed', () => {
@@ -54,7 +58,11 @@ function createInputWindow() {
     transparent: true
   });
 
-  inputWindow.loadFile('src/input.html');
+  if (process.env.NODE_ENV === 'development') {
+    inputWindow.loadURL('http://localhost:3000/input.html');
+  } else {
+    inputWindow.loadFile(path.join(__dirname, '../dist-renderer/input.html'));
+  }
 
   // Hide window when it loses focus
   inputWindow.on('blur', () => {

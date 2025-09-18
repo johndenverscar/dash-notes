@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dash Notes</title>
+  <style>
+    /* Additional custom styles for JavaScript functionality */
+    .settings-panel.visible {
+      display: block !important;
+    }
+  </style>
+</head>
+<body class="m-0 p-6 font-system bg-bg-primary-light dark:bg-bg-primary-dark text-text-primary-light dark:text-text-primary-dark leading-relaxed transition-colors duration-300">
+  <div class="flex justify-between items-center mb-8 pb-6 border-b border-border-primary-light dark:border-border-primary-dark">
+    <h1 class="m-0 text-3xl font-semibold text-text-primary-light dark:text-text-primary-dark tracking-tight">Dash Notes</h1>
+    <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark font-medium">
+      <span id="noteCount">0 notes</span>
+    </div>
+  </div>
+
+  <div class="flex gap-3 mb-6">
+    <button class="btn-primary" onclick="showQuickNote()">Quick Note (Ctrl+Space)</button>
+    <button class="btn" onclick="toggleSettings()">Settings</button>
+    <button class="btn" onclick="clearSearch()">Clear Search</button>
+  </div>
+
+  <div id="settingsPanel" class="bg-bg-secondary-light dark:bg-bg-secondary-dark border border-border-primary-light dark:border-border-primary-dark rounded-xl p-6 mb-6 hidden shadow-sm">
+    <h3 class="m-0 mb-5 text-xl font-semibold text-text-primary-light dark:text-text-primary-dark">Settings</h3>
+    <div class="flex justify-between items-center py-4 border-b border-border-primary-light dark:border-border-primary-dark">
+      <div>
+        <div class="font-semibold text-text-primary-light dark:text-text-primary-dark text-base">Dark Mode</div>
+        <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1 leading-relaxed">Switch between light and dark appearance for the app.</div>
+      </div>
+      <div class="switch" id="darkModeSwitch" onclick="toggleDarkMode()">
+        <div class="switch-handle"></div>
+      </div>
+    </div>
+    <div class="flex justify-between items-center py-4 border-b-0">
+      <div>
+        <div class="font-semibold text-text-primary-light dark:text-text-primary-dark text-base">Return Key Behavior</div>
+        <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1 leading-relaxed">When enabled, pressing Return will save and open the app. When disabled, Return only saves the note.</div>
+      </div>
+      <div class="switch" id="followNoteSwitch" onclick="toggleFollowNote()">
+        <div class="switch-handle"></div>
+      </div>
+    </div>
+  </div>
+
+  <input type="text" class="input-field mb-6" id="searchBox" placeholder="Search notes...">
+
+  <div id="notesContainer">
+    <div class="text-center py-20 px-5 text-text-secondary-light dark:text-text-secondary-dark">
+      <h3 class="m-0 mb-3 font-semibold text-xl text-text-primary-light dark:text-text-primary-dark">No notes yet</h3>
+      <p class="m-0 text-sm text-text-tertiary-light dark:text-text-tertiary-dark">Press Ctrl+Space to create your first note</p>
+    </div>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

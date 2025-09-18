@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom component classes */
+@layer components {
+  .switch {
+    @apply relative w-12 h-7 bg-border-secondary-light dark:bg-border-secondary-dark rounded-full cursor-pointer transition-all duration-200;
+  }
+
+  .switch.active {
+    @apply bg-accent-primary;
+  }
+
+  .switch-handle {
+    @apply absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full transition-all duration-200 shadow-lg;
+  }
+
+  .switch.active .switch-handle {
+    @apply translate-x-5;
+  }
+
+  .note-item {
+    @apply bg-bg-secondary-light dark:bg-bg-secondary-dark border border-border-primary-light dark:border-border-primary-dark rounded-xl p-5 mb-4 relative transition-all duration-150 shadow-sm;
+  }
+
+  .note-item:hover {
+    @apply border-border-secondary-light dark:border-border-secondary-dark shadow-md transform -translate-y-0.5;
+  }
+
+  .btn {
+    @apply px-5 py-2.5 border border-border-secondary-light dark:border-border-secondary-dark rounded-lg bg-bg-secondary-light dark:bg-bg-secondary-dark text-text-primary-light dark:text-text-primary-dark cursor-pointer text-sm font-medium transition-all duration-150 shadow-sm;
+  }
+
+  .btn:hover {
+    @apply bg-bg-primary-light dark:bg-bg-primary-dark border-text-tertiary-light dark:border-text-tertiary-dark shadow-lg;
+  }
+
+  .btn-primary {
+    @apply bg-accent-primary text-white border-accent-primary shadow-blue-200/20;
+  }
+
+  .btn-primary:hover {
+    @apply bg-accent-secondary border-accent-secondary shadow-blue-300/30;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3.5 border border-border-secondary-light dark:border-border-secondary-dark rounded-lg text-base bg-bg-secondary-light dark:bg-bg-secondary-dark text-text-primary-light dark:text-text-primary-dark transition-all duration-150 shadow-sm;
+  }
+
+  .input-field:focus {
+    @apply outline-none border-accent-primary shadow-accent-primary/30 shadow-sm;
+  }
+
+  .input-field::placeholder {
+    @apply text-text-tertiary-light dark:text-text-tertiary-dark;
+  }
+}
