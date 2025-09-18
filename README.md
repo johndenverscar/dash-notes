@@ -32,16 +32,17 @@ npm install
 
 ## Development
 
-The app uses Vite for fast development with hot module replacement:
+The app uses electron-vite for fast development with hot module replacement:
 
 ```bash
 npm run dev
 ```
 
 This will:
-- Start the Vite development server on `http://localhost:3000`
+- Start the electron-vite development server
 - Launch Electron with hot reload capabilities
 - Automatically reload when you make changes to CSS or JavaScript files
+- No need for a separate HTTP server - files are served directly to Electron
 
 ## Building
 
@@ -55,12 +56,12 @@ npm run build
 
 For local testing/packaging:
 ```bash
-npm run electron:pack
+npm run app:pack
 ```
 
 For production release (creates DMG and ZIP files):
 ```bash
-npm run electron:dist
+npm run app:dist
 ```
 
 This creates files in the `dist/` folder:
@@ -72,7 +73,7 @@ This creates files in the `dist/` folder:
 1. **Update version** in `package.json`
 2. **Build the production app**:
    ```bash
-   npm run electron:dist
+   npm run app:dist
    ```
 3. **Find build artifacts** in the `dist/` folder:
    - DMG file for easy installation
@@ -82,7 +83,7 @@ This creates files in the `dist/` folder:
 
 ## Project Structure
 
-The project uses a modern Vite-based architecture:
+The project uses electron-vite for optimal Electron development:
 
 ```
 src/
@@ -98,7 +99,7 @@ src/
 
 ## Build System
 
-- **Vite**: Modern build tool with fast hot reload
+- **electron-vite**: Optimized Vite-based build tool specifically for Electron
 - **Tailwind CSS**: Utility-first CSS framework
 - **Electron Builder**: Creates platform-specific installers
 - **PostCSS**: CSS processing with Tailwind and Autoprefixer
