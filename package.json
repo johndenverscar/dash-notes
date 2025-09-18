@@ -20,7 +20,6 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@electron-toolkit/utils": "^4.0.0",
     "autoprefixer": "^10.4.21",
     "electron": "^27.0.0",
     "electron-builder": "^24.6.4",

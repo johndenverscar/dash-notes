@@ -1,6 +1,5 @@
 const { app, BrowserWindow, globalShortcut, ipcMain, Menu, Tray, nativeImage } = require('electron');
 const path = require('path');
-const { is } = require('@electron-toolkit/utils');
 const Store = require('electron-store');
 
 const store = new Store();
@@ -27,7 +26,7 @@ function createMainWindow() {
   });
 
   // Load the remote URL for development or the local html file for production
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+  if (!app.isPackaged && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'] + '/main.html');
   } else {
     mainWindow.loadFile(path.join(__dirname, '../renderer/main.html'));
@@ -61,7 +60,7 @@ function createInputWindow() {
   });
 
   // Load the remote URL for development or the local html file for production
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+  if (!app.isPackaged && process.env['ELECTRON_RENDERER_URL']) {
     inputWindow.loadURL(process.env['ELECTRON_RENDERER_URL'] + '/input.html');
   } else {
     inputWindow.loadFile(path.join(__dirname, '../renderer/input.html'));
