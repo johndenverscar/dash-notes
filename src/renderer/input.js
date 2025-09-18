@@ -6,7 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Focus input when window shows
   ipcRenderer.on('focus-input', () => {
-    noteInput.focus();
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      noteInput.focus();
+      // Also select any existing content for easy replacement
+      noteInput.select();
+    });
   });
 
 
@@ -70,6 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Auto-resize on input
   noteInput.addEventListener('input', setTextareaHeight);
+
+  // Also focus when window gets focus (backup method)
+  window.addEventListener('focus', () => {
+    requestAnimationFrame(() => {
+      noteInput.focus();
+    });
+  });
 
   // Reset height when clearing
   ipcRenderer.on('clear-input', () => {

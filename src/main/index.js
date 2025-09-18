@@ -90,7 +90,11 @@ function showInputWindow() {
 
   inputWindow.show();
   inputWindow.focus();
-  inputWindow.webContents.send('focus-input');
+
+  // Delay focus to ensure window is fully shown and ready
+  setTimeout(() => {
+    inputWindow.webContents.send('focus-input');
+  }, 50);
 }
 
 function hideInputWindow() {
