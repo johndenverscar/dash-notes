@@ -9,10 +9,7 @@
     "build": "electron-builder",
     "build:mac": "electron-builder --mac",
     "pack": "electron-builder --dir",
-    "release": "electron-builder --mac --publish=never",
-    "release:github": "electron-builder --mac --publish=always",
-    "prerelease": "npm version patch",
-    "homebrew:update": "node scripts/update-homebrew.js"
+    "release": "electron-builder --mac --publish=never"
   },
   "keywords": [
     "note-taking",
