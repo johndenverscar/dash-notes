@@ -158,7 +158,8 @@ ipcMain.handle('delete-note', async (event, noteId) => {
 
 ipcMain.handle('get-config', async () => {
   return {
-    followNoteToApp: store.get('followNoteToApp', false)
+    followNoteToApp: store.get('followNoteToApp', false),
+    darkMode: store.get('darkMode', false)
   };
 });
 
@@ -184,6 +185,13 @@ ipcMain.on('note-submitted', (event, data) => {
 
 ipcMain.on('show-quick-note', () => {
   showInputWindow();
+});
+
+ipcMain.on('set-theme', (event, theme) => {
+  // Update input window theme if it exists
+  if (inputWindow && !inputWindow.isDestroyed()) {
+    inputWindow.webContents.send('set-theme', theme);
+  }
 });
 
 app.whenReady().then(() => {

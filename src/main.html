@@ -4,13 +4,48 @@
   <meta charset="UTF-8">
   <title>Rolodex</title>
   <style>
+    :root {
+      /* Light mode colors */
+      --bg-primary: #fafafa;
+      --bg-secondary: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b7280;
+      --text-tertiary: #9ca3af;
+      --border-primary: #e5e7eb;
+      --border-secondary: #d1d5db;
+      --accent-primary: #f97316;
+      --accent-secondary: #ea580c;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.08);
+      --shadow-heavy: rgba(0, 0, 0, 0.1);
+      --overlay: rgba(249, 115, 22, 0.1);
+    }
+
+    [data-theme="dark"] {
+      /* Dark mode colors */
+      --bg-primary: #0f0f0f;
+      --bg-secondary: #1a1a1a;
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-tertiary: #71717a;
+      --border-primary: #27272a;
+      --border-secondary: #3f3f46;
+      --accent-primary: #f97316;
+      --accent-secondary: #ea580c;
+      --shadow-light: rgba(0, 0, 0, 0.2);
+      --shadow-medium: rgba(0, 0, 0, 0.3);
+      --shadow-heavy: rgba(0, 0, 0, 0.4);
+      --overlay: rgba(249, 115, 22, 0.2);
+    }
+
     body {
       margin: 0;
       padding: 24px;
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
-      background: #fafafa;
-      color: #1a1a1a;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       line-height: 1.5;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .header {
@@ -19,20 +54,20 @@
       align-items: center;
       margin-bottom: 32px;
       padding-bottom: 24px;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid var(--border-primary);
     }
 
     h1 {
       margin: 0;
       font-size: 32px;
       font-weight: 600;
-      color: #1a1a1a;
+      color: var(--text-primary);
       letter-spacing: -0.02em;
     }
 
     .stats {
       font-size: 15px;
-      color: #6b7280;
+      color: var(--text-secondary);
       font-weight: 500;
     }
 
@@ -44,50 +79,50 @@
 
     button {
       padding: 10px 20px;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--border-secondary);
       border-radius: 8px;
-      background: #ffffff;
-      color: #374151;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
       cursor: pointer;
       font-size: 14px;
       font-weight: 500;
       transition: all 0.15s ease;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 2px var(--shadow-light);
     }
 
     button:hover {
-      background: #f9fafb;
-      border-color: #9ca3af;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      background: var(--bg-primary);
+      border-color: var(--text-tertiary);
+      box-shadow: 0 1px 3px var(--shadow-heavy);
     }
 
     button.primary {
-      background: #f97316;
+      background: var(--accent-primary);
       color: white;
-      border-color: #f97316;
+      border-color: var(--accent-primary);
       box-shadow: 0 1px 2px rgba(249, 115, 22, 0.2);
     }
 
     button.primary:hover {
-      background: #ea580c;
-      border-color: #ea580c;
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
       box-shadow: 0 2px 4px rgba(249, 115, 22, 0.3);
     }
 
     .note-item {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 16px;
       position: relative;
       transition: all 0.15s ease;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 3px var(--shadow-light);
     }
 
     .note-item:hover {
-      border-color: #d1d5db;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: var(--border-secondary);
+      box-shadow: 0 4px 12px var(--shadow-medium);
       transform: translateY(-1px);
     }
 
@@ -97,12 +132,12 @@
       margin-bottom: 12px;
       white-space: pre-wrap;
       word-wrap: break-word;
-      color: #1f2937;
+      color: var(--text-primary);
     }
 
     .note-meta {
       font-size: 13px;
-      color: #6b7280;
+      color: var(--text-secondary);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -119,7 +154,7 @@
       font-size: 12px;
       border: none;
       background: transparent;
-      color: #6b7280;
+      color: var(--text-secondary);
       cursor: pointer;
       border-radius: 6px;
       font-weight: 500;
@@ -127,60 +162,65 @@
     }
 
     .note-actions button:hover {
-      color: #374151;
-      background: #f3f4f6;
+      color: var(--text-primary);
+      background: var(--bg-primary);
     }
 
     .note-actions .delete:hover {
       color: #dc2626;
-      background: #fef2f2;
+      background: rgba(220, 38, 38, 0.1);
     }
 
     .empty-state {
       text-align: center;
       padding: 80px 20px;
-      color: #6b7280;
+      color: var(--text-secondary);
     }
 
     .empty-state h3 {
       margin: 0 0 12px 0;
       font-weight: 600;
       font-size: 20px;
-      color: #374151;
+      color: var(--text-primary);
     }
 
     .empty-state p {
       margin: 0;
       font-size: 15px;
-      color: #9ca3af;
+      color: var(--text-tertiary);
     }
 
     .search-box {
       width: 100%;
       padding: 14px 16px;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--border-secondary);
       border-radius: 10px;
       font-size: 16px;
       margin-bottom: 24px;
-      background: #ffffff;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
       transition: all 0.15s ease;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 2px var(--shadow-light);
     }
 
     .search-box:focus {
       outline: none;
-      border-color: #f97316;
-      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--overlay);
+    }
+
+    .search-box::placeholder {
+      color: var(--text-tertiary);
     }
 
     .settings-panel {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
       border-radius: 12px;
       padding: 24px;
       margin-bottom: 24px;
       display: none;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 3px var(--shadow-light);
     }
 
     .settings-panel.visible {
@@ -191,7 +231,7 @@
       margin: 0 0 20px 0;
       font-size: 20px;
       font-weight: 600;
-      color: #1f2937;
+      color: var(--text-primary);
     }
 
     .setting-item {
@@ -199,7 +239,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 16px 0;
-      border-bottom: 1px solid #f3f4f6;
+      border-bottom: 1px solid var(--border-primary);
     }
 
     .setting-item:last-child {
@@ -208,13 +248,13 @@
 
     .setting-label {
       font-weight: 600;
-      color: #374151;
+      color: var(--text-primary);
       font-size: 16px;
     }
 
     .setting-description {
       font-size: 14px;
-      color: #6b7280;
+      color: var(--text-secondary);
       margin-top: 4px;
       line-height: 1.5;
     }
@@ -223,14 +263,14 @@
       position: relative;
       width: 48px;
       height: 28px;
-      background: #d1d5db;
+      background: var(--border-secondary);
       border-radius: 14px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .switch.active {
-      background: #f97316;
+      background: var(--accent-primary);
     }
 
     .switch-handle {
@@ -242,7 +282,7 @@
       background: white;
       border-radius: 50%;
       transition: all 0.2s ease;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 3px var(--shadow-heavy);
     }
 
     .switch.active .switch-handle {
@@ -266,6 +306,15 @@
 
   <div id="settingsPanel" class="settings-panel">
     <h3>Settings</h3>
+    <div class="setting-item">
+      <div>
+        <div class="setting-label">Dark Mode</div>
+        <div class="setting-description">Switch between light and dark appearance for the app.</div>
+      </div>
+      <div class="switch" id="darkModeSwitch" onclick="toggleDarkMode()">
+        <div class="switch-handle"></div>
+      </div>
+    </div>
     <div class="setting-item">
       <div>
         <div class="setting-label">Return Key Behavior</div>
@@ -302,11 +351,23 @@
 
     async function loadConfig() {
       const config = await ipcRenderer.invoke('get-config');
+
+      // Load follow note setting
       const followSwitch = document.getElementById('followNoteSwitch');
       if (config.followNoteToApp) {
         followSwitch.classList.add('active');
       } else {
         followSwitch.classList.remove('active');
+      }
+
+      // Load dark mode setting
+      const darkModeSwitch = document.getElementById('darkModeSwitch');
+      if (config.darkMode) {
+        darkModeSwitch.classList.add('active');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        darkModeSwitch.classList.remove('active');
+        document.documentElement.setAttribute('data-theme', 'light');
       }
     }
 
@@ -388,6 +449,24 @@
       settingsVisible = !settingsVisible;
       const panel = document.getElementById('settingsPanel');
       panel.classList.toggle('visible', settingsVisible);
+    }
+
+    async function toggleDarkMode() {
+      const darkModeSwitch = document.getElementById('darkModeSwitch');
+      const isActive = darkModeSwitch.classList.contains('active');
+
+      darkModeSwitch.classList.toggle('active', !isActive);
+
+      // Apply theme immediately
+      const newTheme = !isActive ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+
+      // Also update input window if it exists
+      ipcRenderer.send('set-theme', newTheme);
+
+      await ipcRenderer.invoke('set-config', {
+        darkMode: !isActive
+      });
     }
 
     async function toggleFollowNote() {
