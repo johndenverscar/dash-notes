@@ -14,7 +14,11 @@
     "prerelease": "npm version patch",
     "homebrew:update": "node scripts/update-homebrew.js"
   },
-  "keywords": ["note-taking", "productivity", "electron"],
+  "keywords": [
+    "note-taking",
+    "productivity",
+    "electron"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
@@ -41,11 +45,17 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ]
     },
@@ -66,7 +76,7 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "YOUR_USERNAME",
+      "owner": "johndenverscar",
       "repo": "rolodex"
     }
   }
