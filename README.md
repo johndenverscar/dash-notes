@@ -16,6 +16,16 @@ A quick, ad-hoc note-taking Mac desktop app that opens with a global hotkey.
 
 ## Installation
 
+### For Mac Users (DMG Installation)
+
+1. Download the latest `Dash Notes-X.X.X.dmg` file from the releases
+2. Double-click the DMG file to open it
+3. Drag "Dash Notes.app" to your Applications folder
+4. Launch Dash Notes from Applications or Spotlight
+5. On first launch, you may need to right-click the app and select "Open" to bypass macOS security warnings
+
+### For Developers
+
 ```bash
 npm install
 ```
@@ -28,9 +38,31 @@ npm run dev
 
 ## Building
 
+### Development Build
 ```bash
 npm run build
 ```
+
+### Production Release
+```bash
+npm run build:mac
+```
+
+This creates:
+- `dist/Dash Notes-0.1.0.dmg` - Installer for distribution
+- `dist/Dash Notes-0.1.0-mac.zip` - Portable app bundle
+
+## Creating a Release
+
+1. **Update version** in `package.json`
+2. **Build the app**:
+   ```bash
+   npm run build:mac
+   ```
+3. **Find build artifacts** in the `dist/` folder:
+   - DMG file for easy installation
+   - ZIP file for portable use
+4. **Distribute** the DMG file to users
 
 ## Usage
 
