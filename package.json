@@ -1,6 +1,6 @@
 {
   "name": "dash-notes",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Dash Notes - Quick note-taking app with global hotkey",
   "main": "src/main.js",
   "scripts": {
