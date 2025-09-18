@@ -1,4 +1,4 @@
-# Building Rolodex for Distribution
+# Building Dash Notes for Distribution
 
 ## Quick Build Commands
 
@@ -27,8 +27,8 @@ npm run release
    ```
 
 2. **Find your files in `dist/` folder:**
-   - `Rolodex-1.0.0.dmg` - Drag-and-drop installer
-   - `Rolodex-1.0.0-mac.zip` - Portable app bundle
+   - `Dash Notes-1.0.0.dmg` - Drag-and-drop installer
+   - `Dash Notes-1.0.0-mac.zip` - Portable app bundle
 
 3. **Share the DMG:**
    - Upload to Google Drive, Dropbox, or any file sharing service
@@ -43,13 +43,13 @@ npm run release
    git add .
    git commit -m "Initial commit"
    git branch -M main
-   git remote add origin https://github.com/YOUR-USERNAME/rolodex.git
+   git remote add origin https://github.com/YOUR-USERNAME/dash-notes.git
    git push -u origin main
    ```
 
 2. **Update package.json:**
    - Change `"your-username"` to your GitHub username
-   - Change `"repo": "rolodex"` to match your repo name
+   - Change `"repo": "dash-notes"` to match your repo name
 
 3. **Build and create release:**
    ```bash
@@ -74,10 +74,10 @@ Requires:
 
 ```
 dist/
-├── Rolodex-1.0.0.dmg          # Installer for users
-├── Rolodex-1.0.0-mac.zip      # Portable version
+├── Dash Notes-1.0.0.dmg       # Installer for users
+├── Dash Notes-1.0.0-mac.zip   # Portable version
 ├── mac/
-│   └── Rolodex.app            # The actual app bundle
+│   └── Dash Notes.app         # The actual app bundle
 └── latest-mac.yml             # Auto-updater manifest
 ```
 

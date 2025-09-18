@@ -22,7 +22,7 @@ function createMainWindow() {
       contextIsolation: false
     },
     show: false,
-    title: 'Rolodex'
+    title: 'Dash Notes'
   });
 
   mainWindow.loadFile('src/main.html');
@@ -96,7 +96,7 @@ function createTray() {
 
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Show Rolodex',
+      label: 'Show Dash Notes',
       click: () => {
         if (!mainWindow || mainWindow.isDestroyed()) {
           createMainWindow();
@@ -126,7 +126,7 @@ function createTray() {
   ]);
 
   tray.setContextMenu(contextMenu);
-  tray.setToolTip('Rolodex - Quick Notes');
+  tray.setToolTip('Dash Notes - Quick Notes');
 }
 
 // IPC handlers

@@ -1,7 +1,7 @@
 {
-  "name": "rolodex",
+  "name": "dash-notes",
   "version": "1.0.0",
-  "description": "Quick note-taking app with global hotkey",
+  "description": "Dash Notes - Quick note-taking app with global hotkey",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
@@ -26,8 +26,8 @@
     "electron-store": "^8.1.0"
   },
   "build": {
-    "appId": "com.rolodex.app",
-    "productName": "Rolodex",
+    "appId": "com.dashnotes.app",
+    "productName": "Dash Notes",
     "directories": {
       "output": "dist"
     },
@@ -75,7 +75,7 @@
     "publish": {
       "provider": "github",
       "owner": "johndenverscar",
-      "repo": "rolodex"
+      "repo": "dash-notes"
     }
   }
 }

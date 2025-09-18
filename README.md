@@ -1,4 +1,4 @@
-# Rolodex
+# Dash Notes
 
 A quick, ad-hoc note-taking Mac desktop app that opens with a global hotkey.
 
