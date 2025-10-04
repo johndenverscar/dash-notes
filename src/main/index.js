@@ -104,9 +104,12 @@ function hideInputWindow() {
 }
 
 function createTray() {
-  // Create a simple tray icon (we'll use a basic icon for now)
-  const icon = nativeImage.createFromPath(path.join(__dirname, '../assets/icon.png')).resize({ width: 16, height: 16 });
+  // Use a transparent 1x1 image as placeholder (required for Tray initialization)
+  const icon = nativeImage.createEmpty();
+
   tray = new Tray(icon);
+  tray.setTitle('📝');
+  tray.setToolTip('Dash Notes');
 
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -240,12 +243,101 @@ ipcMain.on('set-theme', (event, theme) => {
   }
 });
 
+function createMenuBar() {
+  const isMac = process.platform === 'darwin';
+
+  const template = [
+    ...(isMac ? [{
+      label: 'Dash Notes',
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'services' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideOthers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    }] : []),
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Quick Note',
+          accelerator: 'Control+Space',
+          click: showInputWindow
+        },
+        { type: 'separator' },
+        isMac ? { role: 'close' } : { role: 'quit' }
+      ]
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        ...(isMac ? [
+          { role: 'pasteAndMatchStyle' },
+          { role: 'delete' },
+          { role: 'selectAll' },
+        ] : [
+          { role: 'delete' },
+          { type: 'separator' },
+          { role: 'selectAll' }
+        ])
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        { role: 'reload' },
+        { role: 'forceReload' },
+        { role: 'toggleDevTools' },
+        { type: 'separator' },
+        { role: 'resetZoom' },
+        { role: 'zoomIn' },
+        { role: 'zoomOut' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' }
+      ]
+    },
+    {
+      label: 'Window',
+      submenu: [
+        { role: 'minimize' },
+        { role: 'zoom' },
+        ...(isMac ? [
+          { type: 'separator' },
+          { role: 'front' },
+          { type: 'separator' },
+          { role: 'window' }
+        ] : [
+          { role: 'close' }
+        ])
+      ]
+    }
+  ];
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+}
+
 app.whenReady().then(() => {
+  // Set app name
+  app.setName('Dash Notes');
+
   // Ensure dock icon is always visible on macOS
   if (process.platform === 'darwin') {
     app.dock.show();
   }
 
+  createMenuBar();
   createMainWindow();
   createInputWindow();
   createTray();
